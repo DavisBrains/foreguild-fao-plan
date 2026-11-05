@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foreguild FAO Operating Plan  -  David Lorwen</title>
+<meta name="author" content="David Lorwen"/>
+<meta name="description" content="Revenue-first Foreguild FAO plan with demo harness, CMV90 futarchy mandates, and interactive unit economics."/>
+<style>
+:root{
+  --ink:#0c1222; --muted:#5b657a; --line:#e6eaf2; --bg:#f6f7fb; --card:#ffffff;
+  --accent:#1d4ed8; --accent2:#0f766e; --warn:#b45309; --good:#047857; --bad:#b91c1c;
+  --serif:"Source Serif 4","Iowan Old Style",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.58 var(--serif)}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{color:#1e3a8a}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1220px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:1.35rem 1rem 2rem;border-right:1px solid var(--line);background:#fff;font:12.5px/1.35 var(--sans)}
+nav.toc .brand{font-weight:700;font-size:13px;margin:0 0 .35rem;letter-spacing:.02em}
+nav.toc .subbrand{color:var(--muted);font-size:11px;margin:0 0 1rem}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:.32rem .45rem;border-radius:6px;margin:0 0 .08rem}
+nav.toc a:hover,.toc a:focus{background:#eef2ff;color:var(--ink)}
+nav.toc a.sub{padding-left:1rem;font-size:11.5px}
+main{padding:1.6rem 2.1rem 4.5rem}
+.cover{position:relative;overflow:hidden;background:
+  radial-gradient(1200px 400px at 10% -10%,rgba(45,212,191,.22),transparent 55%),
+  linear-gradient(135deg,#07111f 0%,#0f2744 48%,#115e59 120%);
+  color:#f8fafc;border-radius:18px;padding:2.15rem 2.15rem 1.7rem;margin:0 0 1.6rem;box-shadow:0 18px 40px rgba(7,17,31,.18)}
+.cover .kicker{font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.78;margin:0 0 .85rem}
+.cover h1{font:700 clamp(1.55rem,3.2vw,2.15rem)/1.18 var(--sans);margin:0 0 .7rem;letter-spacing:-.025em;max-width:38rem}
+.cover .lede{font:400 1.02rem/1.5 var(--sans);max-width:44rem;opacity:.94;margin:0 0 1.15rem}
+.cover .meta{display:flex;flex-wrap:wrap;gap:.45rem .7rem;font:12.5px/1.3 var(--sans)}
+.cover .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);padding:.38rem .65rem;border-radius:999px}
+.note,.assume,.fact{font:13.5px/1.45 var(--sans);padding:.8rem .95rem;border-radius:10px;margin:1rem 0;border:1px solid var(--line)}
+.note{background:#f8fafc;color:var(--muted)}
+.assume{background:#fff7ed;border-color:#fdba74;color:#9a3412}
+.fact{background:#ecfdf5;border-color:#6ee7b7;color:#065f46}
+h2{font:700 1.42rem/1.25 var(--sans);margin:2.35rem 0 .65rem;letter-spacing:-.015em;padding-top:.55rem;border-top:1px solid var(--line)}
+h2 .num{color:var(--accent);margin-right:.35rem}
+h3{font:650 1.08rem/1.3 var(--sans);margin:1.45rem 0 .4rem}
+p{margin:.55rem 0}
+ul,ol{margin:.4rem 0 .85rem;padding-left:1.2rem}
+li{margin:.28rem 0}
+table{width:100%;border-collapse:collapse;font:13.5px/1.4 var(--sans);margin:1rem 0;background:var(--card)}
+th,td{border:1px solid var(--line);padding:.55rem .65rem;vertical-align:top;text-align:left}
+th{background:#eef2ff;font-weight:650;color:#1e293b}
+tr:nth-child(even) td{background:#fbfcff}
+.small{font-size:.9em;color:var(--muted)}
+.fig{margin:1.25rem 0;padding:1.05rem 1.1rem;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 0 rgba(15,23,42,.03)}
+.fig svg{display:block;width:100%;height:auto}
+.figcaption{font:12px/1.4 var(--sans);color:var(--muted);margin-top:.55rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem}
+.card h3{margin-top:0}
+.calc{font:14px/1.4 var(--sans);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;margin:1.1rem 0}
+.calc h3{margin-top:0}
+.calc .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem}
+.calc label{display:flex;flex-direction:column;gap:.25rem;font-size:12px;color:var(--muted)}
+.calc input{font:14px var(--mono);padding:.45rem .55rem;border:1px solid var(--line);border-radius:8px;color:var(--ink);background:#fff}
+.calc .out{margin-top:1rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem}
+.calc .out div{background:#eef2ff;border-radius:10px;padding:.7rem .75rem}
+.calc .out b{display:block;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.calc .out span{font:650 1.15rem/1.2 var(--sans);color:var(--ink)}
+.calc .hint{margin-top:.7rem;font-size:12px;color:var(--muted)}
+.demo-out{font:12px/1.45 var(--mono);background:#0b1220;color:#e2e8f0;padding:1rem 1.1rem;border-radius:12px;overflow:auto;white-space:pre-wrap}
+.refs a{word-break:break-all}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--line);font:13px/1.45 var(--sans);color:var(--muted)}
+.badge{display:inline-block;font:600 11px/1 var(--sans);padding:.28rem .5rem;border-radius:999px;background:#e0e7ff;color:#1e3a8a;margin-right:.35rem}
+@media (max-width:920px){
+  .wrap{grid-template-columns:1fr}
+  nav.toc{position:relative;height:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  main{padding:1rem 1rem 3rem}
+  .grid2{grid-template-columns:1fr}
+}
+@media print{
+  nav.toc{display:none!important}
+  .wrap{display:block;max-width:none}
+  main{padding:0}
+  .cover{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{color:inherit;text-decoration:none}
+  .no-print{display:none!important}
+  .print-only{display:block!important}
+  .calc .grid, .calc .out{break-inside:avoid}
+  body{font-size:11pt;background:#fff}
+  h2{break-after:avoid}
+}
+.print-only{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+<div class="brand">Foreguild FAO</div>
+<div class="subbrand">David Lorwen · @Davis_Brains</div>
+<a href="#exec">Executive summary</a>
+<a href="#s1">1. Thesis &amp; Seer map</a>
+<a href="#s2">2. Product</a>
+<a href="#s2g" class="sub">Guild joint stake</a>
+<a href="#s3">3. Demand &amp; paid pilot</a>
+<a href="#s4">4. Swarm &amp; mandates</a>
+<a href="#s5">5. Assignment</a>
+<a href="#s6">6. Assessment</a>
+<a href="#s7">7. Futarchy (CMV₉₀)</a>
+<a href="#s7w" class="sub">Worked FIP-04</a>
+<a href="#s8">8. Opportunity Markets</a>
+<a href="#s9">9. Unit economics</a>
+<a href="#s9c" class="sub">Calculator</a>
+<a href="#s9s" class="sub">Sensitivity</a>
+<a href="#s10">10. Treasury</a>
+<a href="#s11">11. Disputes &amp; humans</a>
+<a href="#s12">12. 90 / 180-day gates</a>
+<a href="#s13">13. Risks</a>
+<a href="#s14">14. Facts vs assumptions</a>
+<a href="#s15">15. Working demo</a>
+<a href="#refs">Sources</a>
+</nav>
+<main>
+<section class="cover" id="top">
+<p class="kicker">Seer · FAO Operating Plan Contest · poidh Base #1531</p>
+<h1>Foreguild sells accepted outcomes. Bonded Guilds deliver them. Markets write the mandates agents must obey.</h1>
+<p class="lede">I wrote this as a revenue plan I would try to run, not a mechanism sketch. Tasks need machine-checkable acceptance tests. Specialty Guilds with joint stake clear them. Futarchy on Seer’s Gnosis rails sets the expensive policy calls against CMV₉₀. Settlement stays on Base. There is a local demo for the T0 harness and mandate compile, and a calculator you can poke at below.</p>
+<div class="meta">
+<span class="pill">David Lorwen · @Davis_Brains</span>
+<span class="pill">Independent · Nov 2026</span>
+<span class="pill">HTML · PDF · local demo</span>
+<span class="pill">Assumptions labeled · facts cited</span>
+</div>
+</section>
+
+<section id="exec">
+<h2><span class="num">0.</span>Executive summary</h2>
+<p>Foreguild, in Seer’s framing, is an AI job board run as a Futarchy Autonomous Organization: humans and AIs post tasks, AI completes them and gets paid in crypto, and futarchy steers the swarm (<a href="https://poidh.xyz/base/bounty/1531">poidh bounty 1531</a>; <a href="https://x.com/seer_pm/status/2118295224036262374">Seer announcement</a>). I read the public Seer docs and the claims already on the bounty. Most of them rhyme: roughly 10% take, bonds, a Reality ladder, and a tidy Month-5 break-even. Trying to win by inventing a prettier volume chart feels like a waste of everyone’s time.</p>
+<p>Here is what I think actually matters for revenue.</p>
+<ul>
+<li>Refuse to list a task without a written acceptance test. Trust is scarce; compute is not (Seer’s Opportunity Markets page says reviewing work can cost more than doing it  -  <a href="https://opportunity.seer.pm/">opportunity.seer.pm</a>).</li>
+<li>Clear work through <strong>bonded Outcome Guilds</strong> with joint stake, not lone reverse-auction freelancers. A Guild that ships a failing accept loses together. That is the sharpest difference from the lone-agent pack, and from claim 9374 I push further on mutualization math, seat OM pricing, and harness royalties that Guilds can author.</li>
+<li>Earn on settlement, assurance, harness royalties, Guild seat rent, and contest hosting. Governance trading fees stay at <strong>$0 in the base case</strong>. Thin markets are a known failure mode in Seer’s own whitepaper history (<a href="https://docs.seer.pm/whitepaper/why-prediction-markets-failed.md">docs</a>).</li>
+<li>Put only the expensive policy calls through Seer futarchy on Gnosis, scored on CMV₉₀, with MetaDAO-style lagged TWAP and quorum guards (<a href="https://docs.seer.pm/app/futarchy-markets.md">Seer futarchy</a>; <a href="https://docs.metadao.fi/governance/twaps.md">MetaDAO TWAPs</a>). Optimism’s play-money experiment overestimated TVL moves badly (<a href="https://gov.optimism.io/t/futarchy-v1-preliminary-findings/10062">Futarchy v1 findings</a>), so I want real collateral.</li>
+<li>Start with a paid demand pilot and kill criteria. If outsiders will not pay, stop spending.</li>
+</ul>
+<p>Base-case planning assumptions (not forecasts): average accepted ticket <strong>$70</strong>, settlement take <strong>10%</strong> (floor $0.40), contribution after verification/dispute/gas about <strong>$5.40</strong> per accepted task, month-6 cost base about <strong>$9,500</strong>. Break-even under those numbers is roughly <strong>1,760</strong> accepted tasks per month. Worst and best cases are in §9. The calculator defaults to base.</p>
+</section>
+
+<section id="s1">
+<h2><span class="num">1.</span>Thesis and Seer surface map</h2>
+<p>Hanson’s line still holds: vote on values, bet on beliefs (<a href="https://mason.gmu.edu/~rhanson/futarchy.html">manifesto</a>; <a href="https://mason.gmu.edu/~rhanson/futarchy2013.pdf">JPP 2013</a>). For Foreguild the value is revenue quality. I define that as <strong>CMV₉₀</strong>: contribution margin after verification over a trailing 90-day window (§7). Markets bet on which fee, category, or spend raises it. Agents do not freestyle the treasury; they execute compiled mandates.</p>
+<p>I mapped the plan onto Seer products that already exist:</p>
+<div class="fig" aria-label="Seer surface map">
+<svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect width="760" height="270" fill="#fff"/>
+  <text x="20" y="26" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#0c1222">How this plan uses Seer’s surfaces</text>
+  <rect x="20" y="48" width="165" height="95" rx="10" fill="#eef2ff" stroke="#a5b4fc"/>
+  <text x="34" y="74" font-family="system-ui" font-size="13" font-weight="700" fill="#1e3a8a">Futarchy</text>
+  <text x="34" y="96" font-family="system-ui" font-size="11" fill="#312e81">Fees, category opens,</text>
+  <text x="34" y="112" font-family="system-ui" font-size="11" fill="#312e81">big spends · Gnosis</text>
+  <rect x="205" y="48" width="165" height="95" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="219" y="74" font-family="system-ui" font-size="13" font-weight="700" fill="#065f46">Opportunity</text>
+  <text x="219" y="96" font-family="system-ui" font-size="11" fill="#14532d">Guild seats, contests,</text>
+  <text x="219" y="112" font-family="system-ui" font-size="11" fill="#14532d">RFPs · sponsor decides</text>
+  <rect x="390" y="48" width="165" height="95" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="404" y="74" font-family="system-ui" font-size="13" font-weight="700" fill="#9a3412">Conditional</text>
+  <text x="404" y="96" font-family="system-ui" font-size="11" fill="#9a3412">Policies nested on</text>
+  <text x="404" y="112" font-family="system-ui" font-size="11" fill="#9a3412">pass / fail branches</text>
+  <rect x="575" y="48" width="165" height="95" rx="10" fill="#faf5ff" stroke="#d8b4fe"/>
+  <text x="589" y="74" font-family="system-ui" font-size="13" font-weight="700" fill="#6b21a8">Reality + Kleros</text>
+  <text x="589" y="96" font-family="system-ui" font-size="11" fill="#6b21a8">Resolve markets and</text>
+  <text x="589" y="112" font-family="system-ui" font-size="11" fill="#6b21a8">hard task disputes</text>
+  <rect x="20" y="165" width="720" height="78" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="36" y="195" font-family="system-ui" font-size="12" font-weight="700" fill="#0c1222">Not Seer products, in the plan anyway:</text>
+  <text x="36" y="218" font-family="system-ui" font-size="12" fill="#334155">Base USDC escrow · bonded Outcome Guilds · ERC-8004-shaped identity (Draft) · x402-style request payments at the edge</text>
+</svg>
+<p class="figcaption">Fig. 1  -  Seer surface map. Futarchy is documented Gnosis-only. Opportunity Markets leave final selection to the sponsor. Reality.eth is Seer’s oracle; Kleros arbitrates.</p>
+</div>
+<p>One awkward fact I am not papering over: Seer’s futarchy markets are on Gnosis Chain only right now (<a href="https://docs.seer.pm/app/futarchy-markets.md">futarchy markets</a>). This bounty itself settles on Base. So the plan splits rails on purpose: <strong>policy markets on Gnosis</strong>, <strong>settlement on Base</strong>, with the Analyst publishing the CMV₉₀ series both places can read.</p>
+</section>
+
+<section id="s2">
+<h2><span class="num">2.</span>Product: accepted outcomes</h2>
+<p>Buyers do not want an agent. They want a diff that passes the test, a filled schema, a scraped table that matches the hash they posted. Foreguild’s SKU is an <strong>accepted outcome</strong>: escrow releases when the acceptance artifact verifies.</p>
+<p><strong>Hard listing rule.</strong> No acceptance test, no listing. The Scoper rejects vague briefs. Annoying for sales in week one. Necessary if you want dispute rates that do not eat the take.</p>
+<p>Vertical for the first six months (my choice): small, repeatable software and data jobs with deterministic checks. CI-failing patches, schema fills, eval harness updates, bounty-shaped chores like the ones already flowing through poidh.</p>
+<p>Identity: workers and Guild operators register an <strong>ERC-8004</strong> agent identity when deployments exist. The draft ERC defines Identity, Reputation, and Validation registries and treats payments as orthogonal, with x402 as an example enrichment (<a href="https://eips.ethereum.org/EIPS/eip-8004">EIP-8004</a>). Until singletons are live, Foreguild keeps a mirror registry with the same three buckets. I am not pretending 8004 is production law; status is Draft.</p>
+
+<h3 id="s2g">Outcome Guilds with joint stake (this is where I push past claim 9374)</h3>
+<p>Claim 9374’s Bonded Outcome Guilds idea is the strongest structural differentiator I saw on the bounty. Lone reverse auctions push race-to-bottom bids and leave nobody holding the bag when a soft verify slips through. I am keeping Guilds and tightening three pieces I thought were still soft there.</p>
+<p><strong>Joint stake, not window dressing.</strong> A Guild posts a shared bond equal to planning assumption <em>25% of its rolling 30-day booked tickets</em> (floor $200). When a task fails a Reality ruling or a sampled T0 replay, slash hits the shared bond first, then the signing worker’s personal top-up. Members who exit within 14 days of a slash still carry residual liability for jobs they signed. That mutualization is the product. Buyers are buying a desk that hurts together when quality slips.</p>
+<p><strong>Seat market is an Opportunity Market, not a waitlist.</strong> Verified seats per category are scarce. Applicants bond. Traders price who gets the seat on Seer Opportunity Markets; Foreguild (or a category steward) makes the final call, same sponsor-decides pattern Seer already runs (<a href="https://opportunity.seer.pm/">opportunity.seer.pm</a>). Seat rent assumption: $29 / slot / month, paid whether or not the Guild is busy. Empty seats still pay. That alone changes who applies.</p>
+<p><strong>Harness authorship inside the Guild.</strong> Guilds can publish T0 harnesses. When another job uses that harness, royalties split 70% author / 30% protocol (assumption). A Guild that owns the canonical “blank CSV amount” harness earns when the category grows. Verification stops being pure COGS and becomes a reason to specialize. Claim 9374 named harness royalties; I wire them to Guild P&amp;L and to the seat OM so specialization shows up in who traders back.</p>
+<p>What I am <em>not</em> doing: turning every task into its own prediction market. That design (see claim 9366) is elegant on Seer rails and brutal on small-ticket unit economics. Guilds plus T0 keep most jobs off the oracle path.</p>
+</section>
+
+<section id="s3">
+<h2><span class="num">3.</span>Demand and a paid pilot with kill criteria</h2>
+<p>I do not believe a general AI job board lights up from a landing page. My sequencing:</p>
+<ol>
+<li><strong>Seer-seeded book.</strong> Contests, market-ops chores, review triage. Warmest demand because the buyer already understands Opportunity Markets and Reality (<a href="https://opportunity.seer.pm/">OM</a>).</li>
+<li><strong>Public bounty routing.</strong> poidh’s feed is machine-readable (<a href="https://poidh.xyz/bounties/data">/bounties/data</a>; <a href="https://poidh.xyz/skill.md">skill.md</a>). Scout proposes Foreguild-shaped restatements; original issuer still decides acceptance.</li>
+<li><strong>Protocol and DAO maintenance</strong> sold as monthly outcome packs.</li>
+<li><strong>Agent-to-agent</strong> once ERC-8004-style identity and x402-style headers are less awkward (<a href="https://www.coinbase.com/developer-platform/discover/launches/agentic-commerce">Coinbase agentic commerce note</a>).</li>
+<li><strong>Human SMBs</strong> last, through narrow fixed-price offers.</li>
+</ol>
+<h3>Paid pilot (days 0–45)</h3>
+<p>Pilot budget is an <strong>assumption: $2,500 USDC</strong>. Targets: at least 5 settled Seer-adjacent paid tasks; at least 10 settled tasks from buyers we do not control; median time-to-accept under 72 hours on the external set; dispute rate under 15% of settled external tasks.</p>
+<p><strong>Kill criteria.</strong> If by day 45 we have fewer than 6 external paid settles, or contribution on the external set is negative after verification, freeze new category opens and stop discretionary spend. Optimism showed how soft incentives inflate confidence (<a href="https://gov.optimism.io/t/futarchy-v1-preliminary-findings/10062">v1 findings</a>). I would rather look small and solvent.</p>
+<p>CAC targets (assumptions): Seer-seeded ≈ $0–15 per accepted task, bounty routing ≈ $10–25, outbound SMB ≈ $40–80. If outbound CAC sits above contribution for two months, kill outbound.</p>
+</section>
+
+<section id="s4">
+<h2><span class="num">4.</span>The swarm and mandates</h2>
+<p>Nine roles. I named them like desks. “Agent swarm” with no job descriptions just produces nine chatbots arguing in a loop.</p>
+<table>
+<thead><tr><th>Role</th><th>What it does</th><th>What it may spend</th></tr></thead>
+<tbody>
+<tr><td>Scout</td><td>Finds demand (poidh, Seer backlog, partner queues)</td><td>Publishing budget in its mandate</td></tr>
+<tr><td>Scoper</td><td>Turns a brief into an acceptance test + price band</td><td>Tooling quota only</td></tr>
+<tr><td>Router</td><td>Runs Guild assignment scoring, enforces bonds</td><td>None</td></tr>
+<tr><td>Worker (Guild)</td><td>Delivers artifacts under Guild bond</td><td>Compute quota; cannot touch escrow</td></tr>
+<tr><td>Verifier</td><td>Runs harness / samples subjective work</td><td>Verification fee from the task</td></tr>
+<tr><td>Dispute Clerk</td><td>Opens Reality questions, packages evidence</td><td>Arbitration fee envelope</td></tr>
+<tr><td>Treasurer</td><td>Releases escrow per rules; posts CMV₉₀ inputs</td><td>Cannot create new spends</td></tr>
+<tr><td>Analyst</td><td>Publishes weekly CMV₉₀, dispute rates, harness stats</td><td>Read-only + publish quota</td></tr>
+<tr><td>Governance Crier</td><td>Opens Seer markets for FIPs, posts notices</td><td>Market creation / LP envelope from prior FIP</td></tr>
+</tbody>
+</table>
+<p>A <strong>mandate</strong> is a boring object. It is also the thing that makes futarchy real instead of decorative. When a Foreguild Improvement Proposal (FIP) passes, the Crier compiles a signed mandate: parameter keys, numeric caps, allowed categories, expiry, and the market id that justified it. Agents refuse actions outside it. The local demo in §15 shows a compiled mandate blocking a marketing-copy job when only <code>csv-cleanup</code> and <code>ci-patch</code> are allowed.</p>
+</section>
+
+<section id="s5">
+<h2><span class="num">5.</span>Assignment</h2>
+<p>Guilds bid as units. Published score (planning form, tunables later via FIP):</p>
+<p><code>score = bid + (1 − p_pass) × rework_cost + latency_penalty + slash_risk_addon</code></p>
+<p><code>p_pass</code> comes from the Guild’s trailing harness pass rate and ERC-8004-shaped reputation when present. <code>slash_risk_addon</code> rises when the shared bond is thin relative to open tickets. Lowest score wins. Cheap bids with trash pass rates lose.</p>
+<p>New Guilds start with a per-day ticket cap. Public score logs, rotating Verifier sampling, and slash on Reality loss are the anti-collusion kit. Perfect? No. Better than a vibes interview.</p>
+</section>
+
+<section id="s6">
+<h2><span class="num">6.</span>Assessment tiers</h2>
+<div class="fig" aria-label="Assessment pyramid">
+<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect width="760" height="250" fill="#fff"/>
+  <text x="20" y="26" font-family="system-ui" font-size="14" font-weight="700" fill="#0c1222">Assessment pyramid</text>
+  <polygon points="380,45 555,105 205,105" fill="#ecfdf5" stroke="#34d399"/>
+  <text x="300" y="88" font-family="system-ui" font-size="12" font-weight="700" fill="#065f46">T0 · Deterministic harness</text>
+  <polygon points="205,115 555,115 640,170 120,170" fill="#eef2ff" stroke="#818cf8"/>
+  <text x="255" y="150" font-family="system-ui" font-size="12" font-weight="700" fill="#1e3a8a">T1 · Optimistic assertion (hash + logs)</text>
+  <polygon points="120,180 640,180 720,230 40,230" fill="#fff7ed" stroke="#fb923c"/>
+  <text x="210" y="212" font-family="system-ui" font-size="12" font-weight="700" fill="#9a3412">T2 · Reality.eth → Kleros if escalated</text>
+</svg>
+<p class="figcaption">Fig. 2  -  Most tasks should die at T0. UMA documents that ~99.8% of optimistic-oracle requests resolve undisputed (<a href="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work.md">UMA</a>). Reality bond escalation and Kleros arbitration: <a href="https://docs.kleros.io/developers/products/reality/overview.md">Kleros Reality overview</a>. Seer already uses Reality + Kleros for markets (<a href="https://docs.seer.pm/documentation/what-is-seer.md">What is Seer</a>).</p>
+</div>
+<p><strong>T0.</strong> Buyer’s acceptance test in a frozen container. Exit code and artifact hash decide. Guild-authored harnesses can earn royalties (70/30 assumption).</p>
+<p><strong>T1.</strong> Mostly checkable work gets an optimistic “passed, hash H” assertion with a short challenge window. UMA’s economics are the reference, not a day-one wrap claim.</p>
+<p><strong>T2.</strong> Subjective leftovers become Reality.eth questions. Answers require bonds; overrides double the bond; timeout finalizes; disagreement goes to Kleros.</p>
+</section>
+
+<section id="s7">
+<h2><span class="num">7.</span>Futarchy governance on CMV₉₀</h2>
+<p>Values layer first.</p>
+<div class="fact"><strong>Resolution-grade definition.</strong> For trailing window W = last 90 UTC days:<br/>
+<code>CMV₉₀ = Σ(settlement_take + assurance + harness_protocol_share + seat_rent + contest_hosting)_W − Σ(verifier_cash_costs + dispute_fees_net + gas_subsidy + support_reserve_draw)_W</code><br/>
+Published weekly by the Analyst. Governance trading P&amp;L is excluded on purpose.</div>
+<p>Rethink Priorities’ critique list is worth reading cold: welfare metrics get gamed, rich traders dominate, long horizons are hard, conditional prices are not always clean causal estimates, and deep pockets can push policies (<a href="https://rethinkpriorities.org/research-area/issues-with-futarchy/">Issues with futarchy</a>). Guardrails below bound the damage. They do not abolish politics.</p>
+<table>
+<thead><tr><th>Futarchy may set (Class A)</th><th>Constitution / humans only</th></tr></thead>
+<tbody>
+<tr><td>Settlement take inside 6–14% band</td><td>Hard band itself; escrow custody; pause powers</td></tr>
+<tr><td>Opening a new task category</td><td>Prohibited task classes</td></tr>
+<tr><td>Bond floors/ceilings inside caps</td><td>Changing CMV₉₀’s definition without supermajority process</td></tr>
+<tr><td>Treasury spends above $3k (assumption)</td><td>Unwinding user escrow</td></tr>
+<tr><td>Harness royalty protocol share inside 10–40%</td><td>Seizing bonds without a dispute ruling</td></tr>
+<tr><td>Guild seat supply per category</td><td>Lawful refuse list</td></tr>
+</tbody>
+</table>
+<p>Class A proposals open as Seer futarchy markets on Gnosis: two collateral tokens, YES/NO pools, resolved through Reality via FutarchyRealityProxy (answer 0 accepts; anything else, including invalid, rejects  -  <a href="https://docs.seer.pm/developers/guides/futarchy-markets.md">dev guide</a>; <a href="https://docs.seer.pm/developers/contracts/futarchy/futarchyrealityproxy.md">proxy</a>).</p>
+<p>Anti-manipulation package, adapted from MetaDAO (<a href="https://docs.metadao.fi/governance/twaps.md">Finalizing Proposals</a>):</p>
+<ul>
+<li>Lagged price TWAP on YES/NO relative prices.</li>
+<li>24h discovery before TWAP recording counts.</li>
+<li>~48h TWAP window after that (~72h end-to-end).</li>
+<li>Pass threshold: team-sponsored FIPs need passEdge ≥ −1%; permissionless ≥ +2%. passEdge = (passTWAP − failTWAP) / failTWAP. MetaDAO’s template uses −3% / +3%; I tightened the negative side because our early book is thin.</li>
+<li>Quorum assumption: $4,000 notional or fail closed.</li>
+<li>Per-address cap assumption: 8% of observed depth during TWAP window.</li>
+<li>Proposal bond refunded on clean resolve; burned on spam/abandon.</li>
+</ul>
+<p>Liquidity comes from a dedicated LP envelope funded only by prior FIPs. I am not booking LP fees as Foreguild revenue in the base case. LP is an information cost. Seer’s whitepaper spends pages on why thin markets fail (<a href="https://docs.seer.pm/whitepaper/why-prediction-markets-failed.md">failure modes</a>).</p>
+<div class="fig" aria-label="Futarchy to mandate">
+<svg viewBox="0 0 760 175" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect width="760" height="175" fill="#fff"/>
+  <text x="20" y="24" font-family="system-ui" font-size="14" font-weight="700" fill="#0c1222">Futarchy → mandate → agents</text>
+  <rect x="18" y="48" width="105" height="62" rx="8" fill="#eef2ff" stroke="#a5b4fc"/><text x="36" y="84" font-family="system-ui" font-size="11" font-weight="700" fill="#1e3a8a">FIP text</text>
+  <rect x="145" y="48" width="125" height="62" rx="8" fill="#ecfdf5" stroke="#6ee7b7"/><text x="158" y="76" font-family="system-ui" font-size="11" font-weight="700" fill="#065f46">Seer futarchy</text><text x="158" y="94" font-family="system-ui" font-size="10" fill="#065f46">Gnosis · TWAP</text>
+  <rect x="292" y="48" width="120" height="62" rx="8" fill="#faf5ff" stroke="#d8b4fe"/><text x="304" y="76" font-family="system-ui" font-size="11" font-weight="700" fill="#6b21a8">Reality resolve</text><text x="304" y="94" font-family="system-ui" font-size="10" fill="#6b21a8">ans 0 / ≠0</text>
+  <rect x="434" y="48" width="110" height="62" rx="8" fill="#fff7ed" stroke="#fdba74"/><text x="452" y="84" font-family="system-ui" font-size="11" font-weight="700" fill="#9a3412">Mandate</text>
+  <rect x="566" y="48" width="170" height="62" rx="8" fill="#f8fafc" stroke="#cbd5e1"/><text x="586" y="76" font-family="system-ui" font-size="11" font-weight="700" fill="#0c1222">Guild agents</text><text x="586" y="94" font-family="system-ui" font-size="10" fill="#475569">refuse out-of-cap acts</text>
+  <text x="20" y="145" font-family="system-ui" font-size="11" fill="#64748b">Everyday routing stays off-market. Only Class A policy crosses this pipe. Demo in §15.</text>
+</svg>
+<p class="figcaption">Fig. 3  -  Governance pipe. Conditional nesting when a policy only makes sense on a parent outcome (<a href="https://docs.seer.pm/app/conditional-markets.md">conditional markets</a>).</p>
+</div>
+<h3 id="s7w">Worked proposal: FIP-04 fee bump (scenario)</h3>
+<p>Scenario only: Month 4, ops wants settlement take raised from 10% to 12% “to fund Scout.” Stewards sponsor FIP-04. After the lagged TWAP window, passEdge prints at −2.4% with $6.2k notional (<strong>illustration, not data</strong>). Team threshold was −1%, so FIP-04 fails. No mandate compiles. Take stays 10%. Useful failure: the desk wanted cosmetics; the book priced buyer pushback.</p>
+<p>Goodhart brakes that change behavior: if acceptance rate on settled tasks falls below 80% over 30 days, Class A fee-raise FIPs auto-block. If dispute rate exceeds 12% over 30 days, category opens freeze. If quorum fails three FIPs in a row, LP top-up needs a guardian signature (§11).</p>
+</section>
+
+<section id="s8">
+<h2><span class="num">8.</span>Opportunity Markets as a product</h2>
+<p>Seer already sells the pattern: entries, traders price selection odds, sponsor triages, sponsor decides, traders settle (<a href="https://opportunity.seer.pm/">opportunity.seer.pm</a>). This contest is that machine. Foreguild hosts it for other teams.</p>
+<ul>
+<li>Verified Guild seats (OM-triaged; rent assumption $29/mo).</li>
+<li>Buyer contests / RFPs (hosting assumption $500–$2,000).</li>
+<li>Internal triage for grant-like spends.</li>
+</ul>
+<p>Revenue here is hosting and seat rent, not “we skim trading fees and get rich.”</p>
+</section>
+
+<section id="s9">
+<h2><span class="num">9.</span>Unit economics, calculator, sensitivity</h2>
+<p>Benchmarks first. Fiverr reported a FY2025 marketplace take rate of <strong>27.7%</strong> (marketplace revenue over GMV) and FY2025 revenue of $430.9M (<a href="https://www.sec.gov/Archives/edgar/data/1762301/000117891326000544/exhibit_99-1.htm">SEC exhibit 99-1</a>). Upwork’s Form 10-K for the year ended December 31, 2025 states that <strong>Marketplace take rate increased to 18.7%</strong> for 2025, as compared to 18.0% in 2024, and that platforms enabled <strong>$4.0 billion of GSV</strong> for 2025; the MD&amp;A table lists GSV of $4,028,386 thousand and Marketplace take rate 18.7% (<a href="https://www.sec.gov/Archives/edgar/data/1627475/000162747526000012/upwk-20251231.htm">Upwork 10-K filed 2026-02-13, accession 0001627475-26-000012</a>). The 10-K defines Marketplace take rate as Marketplace revenue divided by Marketplace GSV. poidh takes <strong>2.5%</strong> on accepted bounty payouts (<a href="https://poidh.xyz/skill.md">skill.md</a>). Advertising about 10% only works if verification stays cheap and support stays thin.</p>
+<div class="assume"><strong>Everything in the tables and calculator below is a planning assumption or a number derived from those assumptions, unless tagged as a sourced benchmark.</strong> Foreguild has no public GMV yet.</div>
+
+<h3>Revenue stack I will count</h3>
+<table>
+<thead><tr><th>Line</th><th>Base assumption</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Settlement take</td><td>10% of accepted ticket, floor $0.40</td><td>Futarchy may move inside 6–14%</td></tr>
+<tr><td>Assurance</td><td>+2% on tickets ≥ $500; attach rate 8% of tickets</td><td>Optional</td></tr>
+<tr><td>Harness protocol share</td><td>30% of harness fee; harness fee ≈ $1.20/task when used</td><td>Author 70%</td></tr>
+<tr><td>Guild seat rent</td><td>$29 / slot / month; 40 paying seats in steady month</td><td>OM-triaged</td></tr>
+<tr><td>Contest hosting</td><td>$1,000 average; 2 contests / month</td><td>OM product</td></tr>
+<tr><td style="color:#b91c1c">Governance trading fees</td><td style="color:#b91c1c">$0</td><td style="color:#b91c1c">Excluded on purpose</td></tr>
+</tbody>
+</table>
+
+<h3>One accepted $70 task (base walk)</h3>
+<table>
+<thead><tr><th>Item</th><th>USD</th><th>Tag</th></tr></thead>
+<tbody>
+<tr><td>Ticket (AOV)</td><td>70.00</td><td>Assumption</td></tr>
+<tr><td>Settlement take 10%</td><td>7.00</td><td>Assumption</td></tr>
+<tr><td>Agent / Guild payout</td><td>63.00</td><td>Derived</td></tr>
+<tr><td>Verifier / harness cash cost</td><td>0.90</td><td>Assumption</td></tr>
+<tr><td>Expected dispute allocation</td><td>0.45</td><td>Assumption</td></tr>
+<tr><td>Gas / relays</td><td>0.10</td><td>Assumption</td></tr>
+<tr><td>Support reserve accrual</td><td>0.15</td><td>Assumption</td></tr>
+<tr><td><strong>Contribution</strong></td><td><strong>5.40</strong></td><td>Derived</td></tr>
+</tbody>
+</table>
+
+<div class="fig" aria-label="Revenue waterfall">
+<svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect width="760" height="200" fill="#fff"/>
+  <text x="20" y="24" font-family="system-ui" font-size="14" font-weight="700" fill="#0c1222">Illustrative waterfall · one $70 accepted task (assumptions)</text>
+  <rect x="40" y="45" width="70" height="120" fill="#cbd5e1"/><text x="52" y="185" font-family="system-ui" font-size="10" fill="#334155">GMV 70</text>
+  <rect x="140" y="57" width="70" height="108" fill="#93c5fd"/><text x="148" y="185" font-family="system-ui" font-size="10" fill="#1e3a8a">payout 63</text>
+  <rect x="240" y="153" width="70" height="12" fill="#34d399"/><text x="250" y="185" font-family="system-ui" font-size="10" fill="#065f46">take 7</text>
+  <rect x="340" y="160" width="60" height="5" fill="#fbbf24"/><text x="330" y="185" font-family="system-ui" font-size="10" fill="#92400e">costs 1.6</text>
+  <rect x="440" y="155" width="60" height="10" fill="#0f766e"/><text x="432" y="185" font-family="system-ui" font-size="10" fill="#115e59">contrib 5.4</text>
+  <text x="530" y="95" font-family="system-ui" font-size="12" fill="#334155">Take is not profit.</text>
+  <text x="530" y="115" font-family="system-ui" font-size="12" fill="#334155">Contribution pays the cost base.</text>
+</svg>
+<p class="figcaption">Fig. 4  -  Waterfall. Comps: Fiverr 27.7%; Upwork Marketplace take rate 18.7% (10-K).</p>
+</div>
+
+<p>Month-6 cost base assumption: $9,500. Break-even accepted tasks ≈ 9,500 / 5.40 ≈ <strong>1,760 / month</strong> (~$123k GMV at $70 AOV).</p>
+<p>Crude six-month ramp under base assumptions (still not a forecast):</p>
+<table>
+<thead><tr><th>Month</th><th>Accepted tasks</th><th>GMV</th><th>Contribution</th><th>Cost base</th><th>Surplus</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>120</td><td>$8.4k</td><td>$0.65k</td><td>$6.0k</td><td>−$5.4k</td></tr>
+<tr><td>2</td><td>280</td><td>$19.6k</td><td>$1.51k</td><td>$7.0k</td><td>−$5.5k</td></tr>
+<tr><td>3</td><td>520</td><td>$36.4k</td><td>$2.81k</td><td>$8.0k</td><td>−$5.2k</td></tr>
+<tr><td>4</td><td>900</td><td>$63.0k</td><td>$4.86k</td><td>$8.5k</td><td>−$3.6k</td></tr>
+<tr><td>5</td><td>1,400</td><td>$98.0k</td><td>$7.56k</td><td>$9.0k</td><td>−$1.4k</td></tr>
+<tr><td>6</td><td>1,900</td><td>$133.0k</td><td>$10.26k</td><td>$9.5k</td><td>+$0.8k</td></tr>
+</tbody>
+</table>
+<p class="small">Task counts and cost bases: assumptions. Contribution = tasks × $5.40. If the Day-45 pilot fails, this table is irrelevant and we stop.</p>
+
+<h3 id="s9c">Interactive calculator</h3>
+<p class="no-print small">Defaults match the base case. Move the dials. PDF readers see the frozen base-case readout under the form.</p>
+<div class="calc" id="calc">
+<h3>Monthly model <span class="badge">assumptions</span></h3>
+<div class="grid no-print">
+<label>AOV (USDC)<input id="c_aov" type="number" value="70" min="1" step="1"/></label>
+<label>Accepted tasks / mo<input id="c_vol" type="number" value="1900" min="0" step="10"/></label>
+<label>Settlement take %<input id="c_take" type="number" value="10" min="0" max="30" step="0.1"/></label>
+<label>Assurance attach % of tickets<input id="c_ass_attach" type="number" value="8" min="0" max="100" step="1"/></label>
+<label>Assurance rate % of ticket<input id="c_ass_rate" type="number" value="2" min="0" max="10" step="0.1"/></label>
+<label>Dispute rate % of tasks<input id="c_disp" type="number" value="6" min="0" max="50" step="0.5"/></label>
+<label>Dispute cost USDC / disputed<input id="c_disp_cost" type="number" value="7.5" min="0" step="0.5"/></label>
+<label>Harness use % of tasks<input id="c_har_use" type="number" value="70" min="0" max="100" step="1"/></label>
+<label>Harness fee USDC<input id="c_har_fee" type="number" value="1.2" min="0" step="0.1"/></label>
+<label>Protocol share of harness %<input id="c_har_share" type="number" value="30" min="0" max="100" step="1"/></label>
+<label>Verifier cash USDC / task<input id="c_ver" type="number" value="0.9" min="0" step="0.1"/></label>
+<label>Gas USDC / task<input id="c_gas" type="number" value="0.1" min="0" step="0.01"/></label>
+<label>Support reserve USDC / task<input id="c_sup" type="number" value="0.15" min="0" step="0.01"/></label>
+<label>Paying Guild seats<input id="c_seats" type="number" value="40" min="0" step="1"/></label>
+<label>Seat rent USDC / mo<input id="c_seat_rent" type="number" value="29" min="0" step="1"/></label>
+<label>Contest hosting USDC / mo<input id="c_contests" type="number" value="2000" min="0" step="100"/></label>
+<label>Cost base USDC / mo<input id="c_cost" type="number" value="9500" min="0" step="100"/></label>
+</div>
+<div class="out" id="c_out" aria-live="polite">
+<div><b>Monthly GMV</b><span id="o_gmv">…</span></div>
+<div><b>Settlement take</b><span id="o_take">…</span></div>
+<div><b>Assurance</b><span id="o_ass">…</span></div>
+<div><b>Harness protocol</b><span id="o_har">…</span></div>
+<div><b>Seats + contests</b><span id="o_anc">…</span></div>
+<div><b>Net revenue</b><span id="o_rev">…</span></div>
+<div><b>Variable costs</b><span id="o_vc">…</span></div>
+<div><b>Contribution</b><span id="o_cm">…</span></div>
+<div><b>After cost base</b><span id="o_sur">…</span></div>
+<div><b>CMV₉₀ proxy (3× mo)</b><span id="o_cmv">…</span></div>
+</div>
+<p class="hint">CMV₉₀ proxy here is simply 3 × this month’s contribution, a stand-in when you only have one month of inputs. Real CMV₉₀ uses the trailing 90-day ledger in §7. Governance trading fees remain $0.</p>
+<div class="print-only">
+<p><strong>Base-case calculator freeze (for print/PDF):</strong> AOV $70 · 1,900 tasks · take 10% · GMV $133,000 · settlement take $13,300 · assurance ≈ $213 · harness protocol ≈ $479 · seats+contests $3,160 · net revenue ≈ $17,152 · variable costs ≈ $3,040 · contribution ≈ $14,112 · after $9,500 cost base ≈ +$4,612 · CMV₉₀ proxy ≈ $42,335. (Derived from the default inputs above; still assumptions.)</p>
+</div>
+</div>
+
+<h3 id="s9s">Best / base / worst sensitivity</h3>
+<p>I changed one cluster of drivers at a time and held the month-6 cost base at $9,500 unless noted. Every driver below is an assumption.</p>
+<table>
+<thead><tr><th>Driver (all assumptions)</th><th>Worst</th><th>Base</th><th>Best</th></tr></thead>
+<tbody>
+<tr><td>AOV</td><td>$45</td><td>$70</td><td>$110</td></tr>
+<tr><td>Accepted tasks / mo (month 6)</td><td>700</td><td>1,900</td><td>3,500</td></tr>
+<tr><td>Settlement take</td><td>7%</td><td>10%</td><td>12%</td></tr>
+<tr><td>Assurance attach × rate</td><td>3% × 2%</td><td>8% × 2%</td><td>15% × 2%</td></tr>
+<tr><td>Dispute rate · cost/dispute</td><td>15% · $12</td><td>6% · $7.5</td><td>3% · $5</td></tr>
+<tr><td>Harness use · fee · protocol share</td><td>40% · $0.8 · 20%</td><td>70% · $1.2 · 30%</td><td>90% · $1.5 · 35%</td></tr>
+<tr><td>Verifier + gas + support / task</td><td>$1.60</td><td>$1.15</td><td>$0.80</td></tr>
+<tr><td>Paying seats · rent</td><td>10 · $19</td><td>40 · $29</td><td>80 · $39</td></tr>
+<tr><td>Contest hosting / mo</td><td>$0</td><td>$2,000</td><td>$6,000</td></tr>
+<tr><td>Cost base / mo</td><td>$12,000</td><td>$9,500</td><td>$8,000</td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th>Month-6 outcome (derived)</th><th>Worst</th><th>Base</th><th>Best</th></tr></thead>
+<tbody>
+<tr><td>GMV</td><td>$31.5k</td><td>$133.0k</td><td>$385.0k</td></tr>
+<tr><td>Approx. contribution (tasks×unit + ancillaries − dispute drag)</td><td>~$1.1k</td><td>~$14.0k</td><td>~$48k</td></tr>
+<tr><td>After cost base</td><td>≈ −$10.9k</td><td>≈ +$4.5k</td><td>≈ +$40k</td></tr>
+<tr><td>Break-even tasks at that unit contribution</td><td>Fails at 700</td><td>~1,760</td><td>Clears easily</td></tr>
+</tbody>
+</table>
+<p>My read on which driver matters most: <strong>accepted volume that clears T0</strong>, not take rate. Moving take from 10% to 12% on a thin book is a rounding error next to going from 700 to 1,900 accepted tasks. Dispute rate is the silent killer; at 15% with fat oracle costs the base contribution collapses even if GMV looks fine. That is why the hard listing rule and Guild mutualization are upstream of the fee debate.</p>
+</section>
+
+<section id="s10">
+<h2><span class="num">10.</span>Treasury and spending</h2>
+<p>Escrow is untouchable. It is not runway. Runway sits in a separate treasury Safe with envelope budgeting: ops, LP/information, dispute fees, Scout. Envelopes are mandate-capped.</p>
+<p>Automatic freeze (planning rule): if trailing 30-day contribution is 30% or more below the board’s own plan for two consecutive months, discretionary envelopes lock and only escrow settlement continues. Dull on purpose.</p>
+<p>Spends above the Class A threshold go to futarchy. Below it, desks act inside mandates.</p>
+</section>
+
+<section id="s11">
+<h2><span class="num">11.</span>Disputes, human override, safety</h2>
+<ol>
+<li>Replay T0 harness with pinned inputs.</li>
+<li>Guild redo once inside the original price if the test was under-specified but still objective.</li>
+<li>T1 challenge window on the assertion.</li>
+<li>Reality.eth question with evidence; Kleros if escalated (<a href="https://docs.kleros.io/developers/products/reality/overview.md">mechanics</a>).</li>
+</ol>
+<p>Human guardian (multisig): pause listings, freeze a category, halt mandate compilation for at most 72 hours, and veto a Class A execution that would break custody or law. Every guardian action needs a ratification market within 7 days or the pause auto-lifts. Powers narrow after CMV₉₀ stays contribution-positive for 120 days (schedule assumption): guardian cannot change fees, only pause for safety.</p>
+<p>Safety policy I will not put to a revenue market: refuse tasks that ask for unauthorized access, malware, weapons help, child sexual content, or clear fraud. If that costs GMV, I can live with it.</p>
+<p>x402-style flows stay at the edge. Job settlement stays in escrowed USDC until accept (<a href="https://www.coinbase.com/developer-platform/discover/launches/agentic-commerce">Coinbase note</a>).</p>
+</section>
+
+<section id="s12">
+<h2><span class="num">12.</span>Ninety- and one-hundred-eighty-day gates</h2>
+<div class="fig" aria-label="Roadmap">
+<svg viewBox="0 0 760 165" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect width="760" height="165" fill="#fff"/>
+  <text x="20" y="24" font-family="system-ui" font-size="14" font-weight="700" fill="#0c1222">Gates (miss the gate, cut the spend)</text>
+  <line x1="50" y1="80" x2="710" y2="80" stroke="#c7d2fe" stroke-width="6"/>
+  <circle cx="110" cy="80" r="11" fill="#1d4ed8"/><text x="78" y="110" font-family="system-ui" font-size="11" fill="#0c1222">D0 launch</text>
+  <circle cx="280" cy="80" r="11" fill="#1d4ed8"/><text x="240" y="110" font-family="system-ui" font-size="11" fill="#0c1222">D45 pilot</text>
+  <circle cx="450" cy="80" r="11" fill="#0f766e"/><text x="425" y="110" font-family="system-ui" font-size="11" fill="#0c1222">D90</text>
+  <circle cx="640" cy="80" r="11" fill="#0f766e"/><text x="605" y="110" font-family="system-ui" font-size="11" fill="#0c1222">D180</text>
+  <text x="70" y="55" font-family="system-ui" font-size="10" fill="#64748b">escrow + T0 demo</text>
+  <text x="235" y="55" font-family="system-ui" font-size="10" fill="#64748b">10 external paid</text>
+  <text x="410" y="55" font-family="system-ui" font-size="10" fill="#64748b">first live FIP</text>
+  <text x="585" y="55" font-family="system-ui" font-size="10" fill="#64748b">contrib+</text>
+  <text x="40" y="145" font-family="system-ui" font-size="11" fill="#64748b">D45 kill if &lt;6 external settles or negative external contribution. D180 kill if still subsidy-only with no revised path to ~1,760 tasks/mo.</text>
+</svg>
+<p class="figcaption">Fig. 5  -  Roadmap with kill gates.</p>
+</div>
+</section>
+
+<section id="s13">
+<h2><span class="num">13.</span>Risks</h2>
+<table>
+<thead><tr><th>Risk</th><th>How it shows up</th><th>What I do</th></tr></thead>
+<tbody>
+<tr><td>Goodhart on CMV₉₀</td><td>Accept junk to juice margin</td><td>Acceptance-rate brake; dispute freeze; exclude trading P&amp;L</td></tr>
+<tr><td>Thin / manipulable FIPs</td><td>Last-hour whale</td><td>Lagged TWAP, quorum, caps, real collateral</td></tr>
+<tr><td>Oracle cost</td><td>T2 eats contribution</td><td>Push to T0; price T2 into ticket; refuse vague briefs</td></tr>
+<tr><td>No paid demand</td><td>Pretty HTML, empty escrow</td><td>Day-45 kill; Seer-seeded + bounty routing first</td></tr>
+<tr><td>Guild capture / collusion</td><td>Soft verifies inside a Guild</td><td>Joint slash; sampling; Reality; seat OM can replace them</td></tr>
+<tr><td>Identity immaturity</td><td>ERC-8004 still Draft</td><td>Mirror registries; migrate later</td></tr>
+<tr><td>Chain-split ops errors</td><td>Gnosis policy ≠ Base escrow</td><td>Mandate ids both places; Analyst reconciliation</td></tr>
+<tr><td>Legal / abuse</td><td>Prohibited briefs</td><td>Non-marketable refuse list; guardian pause</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="s14">
+<h2><span class="num">14.</span>Facts vs assumptions ledger</h2>
+<table>
+<thead><tr><th>Claim</th><th>Type</th><th>Source / note</th></tr></thead>
+<tbody>
+<tr><td>Contest prize, AoE deadline 12 Nov 2026, OM judging by Seer team</td><td>Fact</td><td><a href="https://poidh.xyz/base/bounty/1531">poidh/1531</a>; <a href="https://x.com/seer_pm/status/2118295224036262374">X</a></td></tr>
+<tr><td>Seer futarchy Gnosis-only; Reality ans 0 accepts</td><td>Fact</td><td><a href="https://docs.seer.pm/app/futarchy-markets.md">docs</a>; <a href="https://docs.seer.pm/developers/contracts/futarchy/futarchyrealityproxy.md">proxy</a></td></tr>
+<tr><td>Conditional markets; wrong parent → zero</td><td>Fact</td><td><a href="https://docs.seer.pm/app/conditional-markets.md">docs</a></td></tr>
+<tr><td>Reality doubles bonds; Kleros arbitrates</td><td>Fact</td><td><a href="https://docs.kleros.io/developers/products/reality/overview.md">Kleros</a></td></tr>
+<tr><td>UMA ~99.8% undisputed</td><td>Fact</td><td><a href="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work.md">UMA</a></td></tr>
+<tr><td>MetaDAO lagged TWAP; team −3% / non-team +3% template</td><td>Fact</td><td><a href="https://docs.metadao.fi/governance/twaps.md">MetaDAO</a></td></tr>
+<tr><td>Optimism futarchy v1 overestimated TVL; play-money issues</td><td>Fact</td><td><a href="https://gov.optimism.io/t/futarchy-v1-preliminary-findings/10062">gov.optimism</a></td></tr>
+<tr><td>Fiverr FY2025 marketplace take 27.7%; revenue $430.9M</td><td>Fact</td><td><a href="https://www.sec.gov/Archives/edgar/data/1762301/000117891326000544/exhibit_99-1.htm">SEC</a></td></tr>
+<tr><td>Upwork 2025 GSV $4.028B; Marketplace take rate 18.7%</td><td>Fact</td><td><a href="https://www.sec.gov/Archives/edgar/data/1627475/000162747526000012/upwk-20251231.htm">Upwork 10-K</a></td></tr>
+<tr><td>poidh fee 2.5%</td><td>Fact</td><td><a href="https://poidh.xyz/skill.md">skill.md</a></td></tr>
+<tr><td>ERC-8004 Draft; Identity/Reputation/Validation; x402 example</td><td>Fact</td><td><a href="https://eips.ethereum.org/EIPS/eip-8004">EIP-8004</a></td></tr>
+<tr><td>Hanson: vote values, bet beliefs</td><td>Fact</td><td><a href="https://mason.gmu.edu/~rhanson/futarchy.html">manifesto</a></td></tr>
+<tr><td>AOV, takes, volumes, seats, pilot budget, quorum, thresholds</td><td>Assumption</td><td>§3, §7, §9</td></tr>
+<tr><td>FIP-04 −2.4% passEdge story</td><td>Scenario</td><td>§7</td></tr>
+<tr><td>Demo REJECT/ACCEPT / BLOCKED lines</td><td>Reproduced locally</td><td>§15 · <code>demo/captured-output.txt</code></td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="s15">
+<h2><span class="num">15.</span>Working demo (harness + mandate)</h2>
+<p>I got tired of plans that only describe T0. The <code>demo/</code> folder next to this page runs a real acceptance harness on a blank-field CSV bug and compiles a passed FIP into a mandate that blocks out-of-category work. No chain. No wallet. Stdlib Python. Source: <a href="https://github.com/DavisBrains/foreguild-fao-plan/tree/main/demo">https://github.com/DavisBrains/foreguild-fao-plan/tree/main/demo</a>.</p>
+<pre class="demo-out">cd demo
+python3 run_demo.py
+</pre>
+<p>Captured output from a fresh run:</p>
+<pre class="demo-out">Foreguild local demo (no chain, no wallet)
+1) Bad submission (blank amount left in place)
+
+=== T0 harness for demo-001: Normalize blank numeric fields in cost CSV ===
+workspace: fixtures/bad
+  ✓ file_exists out/costs_clean.csv: PASS
+  ✗ csv_no_blank_amount out/costs_clean.csv.amount: FAIL (blank rows [2])
+  ✓ row_count_min out/costs_clean.csv&gt;=3: PASS (got 3)
+VERDICT: REJECT
+
+2) Good submission (blanks normalized to 0.00)
+
+=== T0 harness for demo-001: Normalize blank numeric fields in cost CSV ===
+workspace: fixtures/good
+  ✓ file_exists out/costs_clean.csv: PASS
+  ✓ csv_no_blank_amount out/costs_clean.csv.amount: PASS (none)
+  ✓ row_count_min out/costs_clean.csv&gt;=3: PASS (got 3)
+VERDICT: ACCEPT
+
+=== Compiled mandate from FIP-03 → active_mandate.json ===
+{
+  &quot;source_fip&quot;: &quot;FIP-03&quot;,
+  &quot;market_id&quot;: &quot;seer-gnosis-demo-fip-03&quot;,
+  &quot;compiled_at&quot;: &quot;2026-11-05T22:00:00Z&quot;,
+  &quot;settlement_take_bps&quot;: 1000,
+  &quot;allowed_categories&quot;: [
+    &quot;csv-cleanup&quot;,
+    &quot;ci-patch&quot;
+  ],
+  &quot;worker_daily_spend_cap_usdc&quot;: 200,
+  &quot;max_ticket_usdc&quot;: 500,
+  &quot;harness_protocol_share_bps&quot;: 3000
+}
+
+=== Mandate check: in-mandate csv-cleanup job ($70) ===
+ALLOWED
+
+=== Mandate check: OUT-OF-MANDATE marketing-copy job ($70) ===
+BLOCKED:
+  - category &#x27;marketing-copy&#x27; not in [&#x27;csv-cleanup&#x27;, &#x27;ci-patch&#x27;]
+
+=== Mandate check: over daily spend cap ===
+BLOCKED:
+  - spend 180+70 &gt; daily cap 200
+
+Demo complete.
+</pre>
+<p>What to notice: the bad fixture fails only the blank-amount test and still gets <strong>REJECT</strong>; the good fixture <strong>ACCEPT</strong>s; the mandate allows <code>csv-cleanup</code> and blocks <code>marketing-copy</code>; over-cap spend dies even in-category. That is the futarchy→mandate pipe in miniature.</p>
+</section>
+
+<section id="refs">
+<h2>Sources (selected)</h2>
+<p class="refs small">
+<a href="https://poidh.xyz/base/bounty/1531">poidh 1531</a> ·
+<a href="https://x.com/seer_pm/status/2118295224036262374">Seer X</a> ·
+<a href="https://docs.seer.pm/documentation/what-is-seer.md">What is Seer</a> ·
+<a href="https://docs.seer.pm/app/futarchy-markets.md">Futarchy</a> ·
+<a href="https://docs.seer.pm/app/conditional-markets.md">Conditional</a> ·
+<a href="https://opportunity.seer.pm/">Opportunity Markets</a> ·
+<a href="https://mason.gmu.edu/~rhanson/futarchy.html">Hanson</a> ·
+<a href="https://rethinkpriorities.org/research-area/issues-with-futarchy/">Rethink Priorities</a> ·
+<a href="https://docs.metadao.fi/governance/twaps.md">MetaDAO TWAP</a> ·
+<a href="https://gov.optimism.io/t/futarchy-v1-preliminary-findings/10062">Optimism v1</a> ·
+<a href="https://docs.kleros.io/developers/products/reality/overview.md">Reality/Kleros</a> ·
+<a href="https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work.md">UMA</a> ·
+<a href="https://www.sec.gov/Archives/edgar/data/1762301/000117891326000544/exhibit_99-1.htm">Fiverr exhibit</a> ·
+<a href="https://www.sec.gov/Archives/edgar/data/1627475/000162747526000012/upwk-20251231.htm">Upwork 10-K 2025</a> ·
+<a href="https://eips.ethereum.org/EIPS/eip-8004">ERC-8004</a> ·
+<a href="https://www.coinbase.com/developer-platform/discover/launches/agentic-commerce">Coinbase x402 context</a> ·
+<a href="https://poidh.xyz/skill.md">poidh skill</a>
+</p>
+</section>
+
+<div class="footer">
+<p>© 2026 David Lorwen (@Davis_Brains). Independent submission for Seer’s Foreguild FAO Operating Plan Contest. Not affiliated with Seer. Numbers marked assumption are planning inputs. The local demo ships in the demo/ folder of this repo. CC BY 4.0 on the text; cite sources for facts.</p>
+</div>
+</main>
+</div>
+<script>
+(function(){
+  function n(id){ var el=document.getElementById(id); return el ? (+el.value || 0) : 0; }
+  function money(x){
+    var neg = x < 0; x = Math.abs(x);
+    var s = x >= 1000 ? x.toLocaleString(undefined,{maximumFractionDigits:0}) : x.toLocaleString(undefined,{maximumFractionDigits:0});
+    return (neg?'−$':'$') + s;
+  }
+  function recalc(){
+    var aov=n('c_aov'), vol=n('c_vol'), take=n('c_take')/100;
+    var assAttach=n('c_ass_attach')/100, assRate=n('c_ass_rate')/100;
+    var disp=n('c_disp')/100, dispCost=n('c_disp_cost');
+    var harUse=n('c_har_use')/100, harFee=n('c_har_fee'), harShare=n('c_har_share')/100;
+    var ver=n('c_ver'), gas=n('c_gas'), sup=n('c_sup');
+    var seats=n('c_seats'), seatRent=n('c_seat_rent'), contests=n('c_contests'), cost=n('c_cost');
+    var gmv = aov * vol;
+    var settlement = gmv * take;
+    var assurance = vol * assAttach * aov * assRate;
+    var harnessProto = vol * harUse * harFee * harShare;
+    var anc = seats * seatRent + contests;
+    var rev = settlement + assurance + harnessProto + anc;
+    var disputeDrag = vol * disp * dispCost;
+    var varCosts = vol * (ver + gas + sup) + disputeDrag;
+    /* protocol keeps harness share as revenue; verifier cash is cost */
+    var contribution = rev - varCosts;
+    var surplus = contribution - cost;
+    var cmv = contribution * 3;
+    function set(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+    set('o_gmv', money(gmv));
+    set('o_take', money(settlement));
+    set('o_ass', money(assurance));
+    set('o_har', money(harnessProto));
+    set('o_anc', money(anc));
+    set('o_rev', money(rev));
+    set('o_vc', money(varCosts));
+    set('o_cm', money(contribution));
+    set('o_sur', money(surplus));
+    set('o_cmv', money(cmv));
+  }
+  document.querySelectorAll('#calc input').forEach(function(inp){
+    inp.addEventListener('input', recalc);
+  });
+  recalc();
+})();
+</script>
+</body>
+</html>

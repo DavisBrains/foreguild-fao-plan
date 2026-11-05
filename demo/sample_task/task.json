@@ -1,0 +1,11 @@
+{
+  "task_id": "demo-001",
+  "title": "Normalize blank numeric fields in cost CSV",
+  "buyer": "demo-buyer",
+  "ticket_usdc": 70,
+  "acceptance_tests": [
+    {"id": "T1", "type": "file_exists", "path": "out/costs_clean.csv"},
+    {"id": "T2", "type": "csv_no_blank_amount", "path": "out/costs_clean.csv", "column": "amount"},
+    {"id": "T3", "type": "row_count_min", "path": "out/costs_clean.csv", "min_rows": 3}
+  ]
+}

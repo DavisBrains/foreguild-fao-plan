@@ -1,0 +1,46 @@
+Foreguild local demo (no chain, no wallet)
+1) Bad submission (blank amount left in place)
+
+=== T0 harness for demo-001: Normalize blank numeric fields in cost CSV ===
+workspace: fixtures/bad
+  ✓ file_exists out/costs_clean.csv: PASS
+  ✗ csv_no_blank_amount out/costs_clean.csv.amount: FAIL (blank rows [2])
+  ✓ row_count_min out/costs_clean.csv>=3: PASS (got 3)
+VERDICT: REJECT
+
+2) Good submission (blanks normalized to 0.00)
+
+=== T0 harness for demo-001: Normalize blank numeric fields in cost CSV ===
+workspace: fixtures/good
+  ✓ file_exists out/costs_clean.csv: PASS
+  ✓ csv_no_blank_amount out/costs_clean.csv.amount: PASS (none)
+  ✓ row_count_min out/costs_clean.csv>=3: PASS (got 3)
+VERDICT: ACCEPT
+
+=== Compiled mandate from FIP-03 → active_mandate.json ===
+{
+  "source_fip": "FIP-03",
+  "market_id": "seer-gnosis-demo-fip-03",
+  "compiled_at": "2026-11-05T22:00:00Z",
+  "settlement_take_bps": 1000,
+  "allowed_categories": [
+    "csv-cleanup",
+    "ci-patch"
+  ],
+  "worker_daily_spend_cap_usdc": 200,
+  "max_ticket_usdc": 500,
+  "harness_protocol_share_bps": 3000
+}
+
+=== Mandate check: in-mandate csv-cleanup job ($70) ===
+ALLOWED
+
+=== Mandate check: OUT-OF-MANDATE marketing-copy job ($70) ===
+BLOCKED:
+  - category 'marketing-copy' not in ['csv-cleanup', 'ci-patch']
+
+=== Mandate check: over daily spend cap ===
+BLOCKED:
+  - spend 180+70 > daily cap 200
+
+Demo complete.

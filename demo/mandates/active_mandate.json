@@ -1,0 +1,13 @@
+{
+  "source_fip": "FIP-03",
+  "market_id": "seer-gnosis-demo-fip-03",
+  "compiled_at": "2026-11-05T22:00:00Z",
+  "settlement_take_bps": 1000,
+  "allowed_categories": [
+    "csv-cleanup",
+    "ci-patch"
+  ],
+  "worker_daily_spend_cap_usdc": 200,
+  "max_ticket_usdc": 500,
+  "harness_protocol_share_bps": 3000
+}
