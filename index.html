@@ -117,13 +117,14 @@ tr:nth-child(even) td{background:#fbfcff}
 <a href="#s13">13. Risks</a>
 <a href="#s14">14. Facts vs assumptions</a>
 <a href="#s15">15. Working demo</a>
+<a href="#s16">16. Live FIP on Seer</a>
 <a href="#refs">Sources</a>
 </nav>
 <main>
 <section class="cover" id="top">
 <p class="kicker">Seer · FAO Operating Plan Contest · poidh Base #1531</p>
 <h1>Foreguild sells accepted outcomes. Bonded Guilds deliver them. Markets write the mandates agents must obey.</h1>
-<p class="lede">I wrote this as a revenue plan I would actually try to run. Tasks need machine checkable acceptance tests. Specialty Guilds with joint stake clear them. Futarchy on Seer’s Gnosis rails sets the expensive policy calls against CMV₉₀. Settlement stays on Base. There is a local demo for the T0 harness and mandate compile, and a calculator you can poke at below.</p>
+<p class="lede">I wrote this as a revenue plan I would actually try to run. Tasks need machine checkable acceptance tests. Specialty Guilds with joint stake clear them. Futarchy on Seer’s Gnosis rails sets the expensive policy calls against CMV₉₀. Settlement stays on Base. There is a local demo for the T0 harness and mandate compile, a calculator you can poke at below, and a test proposal that is live on Seer.</p>
 <div class="meta">
 <span class="pill">David Lorwen · @Davis_Brains</span>
 <span class="pill">Independent · Nov 2026</span>
@@ -302,7 +303,7 @@ Published weekly by the Analyst. Governance trading P&amp;L is excluded on purpo
 <p class="figcaption">Fig. 3. Governance pipe. Conditional nesting when a policy only makes sense on a parent outcome (<a href="https://docs.seer.pm/app/conditional-markets.md">conditional markets</a>).</p>
 </div>
 <h3 id="s7w">Worked proposal: FIP-04 fee bump (scenario)</h3>
-<p>This is a scenario. In month 4, ops wants settlement take raised from 10% to 12% “to fund Scout.” Stewards sponsor FIP-04. After the lagged TWAP window, passEdge prints at −2.4% with $6.2k notional (<strong>an illustration with made up numbers</strong>). Team threshold was −1%, so FIP-04 fails. No mandate compiles. Take stays 10%. I count that as a useful failure. The desk wanted cosmetics and the book priced buyer pushback.</p>
+<p>This is a scenario. In month 4, ops wants settlement take raised from 10% to 12% “to fund Scout.” Stewards sponsor FIP-04. After the lagged TWAP window, passEdge prints at −2.4% with $6.2k notional (<strong>an illustration with made up numbers</strong>). Team threshold was −1%, so FIP-04 fails. No mandate compiles. Take stays 10%. I count that as a useful failure. The desk wanted cosmetics and the book priced buyer pushback. A smaller proposal, FIP-04d, is live on Seer right now so you can follow the same path on chain (§16).</p>
 <p>Some Goodhart brakes change behavior directly. If acceptance rate on settled tasks falls below 80% over 30 days, Class A fee raise FIPs auto block. If dispute rate exceeds 12% over 30 days, category opens freeze. If quorum fails three FIPs in a row, LP top up needs a guardian signature (§11).</p>
 </section>
 
@@ -527,6 +528,7 @@ Published weekly by the Analyst. Governance trading P&amp;L is excluded on purpo
 <tr><td>Hanson’s vote on values and bet on beliefs</td><td>Fact</td><td><a href="https://mason.gmu.edu/~rhanson/futarchy.html">manifesto</a></td></tr>
 <tr><td>AOV, takes, volumes, seats, pilot budget, quorum, thresholds</td><td>Assumption</td><td>§3, §7, §9</td></tr>
 <tr><td>FIP-04 −2.4% passEdge story</td><td>Scenario</td><td>§7</td></tr>
+<tr><td>FIP-04d decision market and two conditional branches live on Gnosis, 1 xDAI min bond, Kleros arbitrator</td><td>Fact</td><td><a href="https://gnosisscan.io/tx/0x9b7aa347fdedb1b18dd0446422f5880a8ad3b49c639e282f90100ea994544631">Gnosisscan</a> · §16</td></tr>
 <tr><td>Demo REJECT/ACCEPT / BLOCKED lines</td><td>Reproduced locally</td><td>§15 · <code>demo/captured-output.txt</code></td></tr>
 </tbody>
 </table>
@@ -587,6 +589,37 @@ BLOCKED:
 Demo complete.
 </pre>
 <p>Watch for a few things. The bad fixture fails only the blank amount test and still gets <strong>REJECT</strong>; the good fixture <strong>ACCEPT</strong>s; the mandate allows <code>csv-cleanup</code> and blocks <code>marketing-copy</code>; over cap spend dies even in category. That is the futarchy→mandate pipe in miniature.</p>
+</section>
+
+<section id="s16">
+<h2><span class="num">16.</span>A live test proposal on Seer (FIP-04d)</h2>
+<p class="fact"><strong>FIP-04d is live on Gnosis, labelled [Demo] on chain.</strong> Foreguild has no revenue yet and nothing in these markets measures revenue. They show the governance path from §7 running for real on Seer’s own contracts, from a written proposal to conditional markets to Reality.eth resolution.</p>
+<p>The question is small on purpose. When the pilot intake opens, which task category should it accept first, CSV cleanup or CI patch? I wrote the proposal the way Kleros Coop runs its Devcon event markets on Seer today. One decision market holds the choice, and a scalar market under each branch asks what happens if that branch wins. Each market resolves through Reality.eth with a 1 xDAI minimum bond and a 3.5 day answer timeout, and Kleros arbitrates any dispute. The rules file <a href="https://github.com/DavisBrains/foreguild-fao-plan/blob/main/demo/fip-04d.md">demo/fip-04d.md</a> went into the repo in commit <a href="https://github.com/DavisBrains/foreguild-fao-plan/commit/2e91136fe83e061001a4cab277568b6e49759fb8">2e91136</a> on 6 Nov 2026, about ten minutes before the first market was created.</p>
+<p>The metric is easy to check. It counts distinct GitHub accounts other than mine, created before 1 Nov 2026, that open an issue labelled pilot-task in the plan repository in the week from 13 Nov 2026. The <a href="https://github.com/DavisBrains/foreguild-fao-plan/issues/new?template=pilot-task.yml">pilot task form</a> adds the label. Each branch runs from 0 to 40 accounts.</p>
+<table>
+<tr><th>Market</th><th>Type</th><th>Opens for answers</th><th>On chain</th></tr>
+<tr><td>Decision, which category FIP-04d adopts</td><td>Categorical</td><td>12 Nov 2026, 6 pm UTC</td><td><a href="https://app.seer.pm/markets/100/0xd1ccddfb0684a93f9bbb9a7dda0918a62ba3e4c7">Seer</a> · <a href="https://gnosisscan.io/tx/0x9b7aa347fdedb1b18dd0446422f5880a8ad3b49c639e282f90100ea994544631">tx</a></td></tr>
+<tr><td>Branch A, if CSV cleanup, how many accounts</td><td>Scalar 0 to 40, conditional on outcome 0</td><td>20 Nov 2026, midnight UTC</td><td><a href="https://app.seer.pm/markets/100/0x1f93d14169a966f624e2f86162a1a5dfcffdb8d8">Seer</a> · <a href="https://gnosisscan.io/tx/0x06d42842a6ef8bc19f67c6c9dad4d2900eff2351b1b90100c5aed7c60d6acaee">tx</a></td></tr>
+<tr><td>Branch B, if CI patch, how many accounts</td><td>Scalar 0 to 40, conditional on outcome 1</td><td>20 Nov 2026, midnight UTC</td><td><a href="https://app.seer.pm/markets/100/0x9d713f713de42887cf0a32a80e228711b299902f">Seer</a> · <a href="https://gnosisscan.io/tx/0x7d10909ee9a252a22c89c109b5bdee6d82c1f9cd4a3254da8f159ccbcb6dfff9">tx</a></td></tr>
+</table>
+<p class="small">I read all three back on chain after creation. The branches point to the decision market at 0xd1cc…e4c7 with the right outcome index, the bounds are 0 and 40, the opening times are 1794506400 and 1795132800, and every Reality.eth question carries the 1 xDAI minimum bond and the Kleros arbitrator. The three creation transactions cost about 0.0000006 xDAI in total.</p>
+<p>This stage needs the proposal itself to be real and checkable, and that is what the markets deliver. Liquidity is a separate step that I add when a real pilot budget is at stake, so the prices carry information from people with money on the line. Until then a clear default decides, and FIP-04d adopts CSV cleanup. The price rule is already written into the rules file. Once both branch pools hold at least 5 tokens a side through the 24 hourly reads before 12 Nov 2026 at 6 pm UTC, the branch with the higher expected count wins. Either way the decision file lands in the repo by that time, ahead of the contest close.</p>
+<figure style="margin:1rem 0">
+<img src="assets/fip-04d/seer-decision-market.png" alt="Seer page for the FIP-04d decision market with outcomes CSV cleanup and CI patch" style="max-width:100%;border:1px solid #cbd5e1;border-radius:8px"/>
+<figcaption class="figcaption">Fig. 6. The FIP-04d decision market on Seer, captured 6 Nov 2026. <a href="https://app.seer.pm/markets/100/0xd1ccddfb0684a93f9bbb9a7dda0918a62ba3e4c7">Open the live page</a>.</figcaption>
+</figure>
+<figure style="margin:1rem 0">
+<img src="assets/fip-04d/seer-branch-a-csv-cleanup.png" alt="Seer page for FIP-04d branch A, a scalar market conditional on CSV cleanup" style="max-width:100%;border:1px solid #cbd5e1;border-radius:8px"/>
+<figcaption class="figcaption">Fig. 7. Branch A on Seer, which Seer marks as conditional on the decision market resolving to CSV cleanup. Branch B looks the same for CI patch (<a href="assets/fip-04d/seer-branch-b-ci-patch.png">screenshot</a>, <a href="https://app.seer.pm/markets/100/0x9d713f713de42887cf0a32a80e228711b299902f">live page</a>).</figcaption>
+</figure>
+<h3>What you can watch</h3>
+<ul>
+<li>The three markets on Seer, with their questions, outcomes and opening times exactly as the rules file states them.</li>
+<li>The decision file landing in the repo on 12 Nov and the decision market being answered on Reality.eth with a bond.</li>
+<li>Pilot task issues arriving through the form, which anyone can count with a GitHub search.</li>
+<li>The winning branch resolving to that count after 20 Nov, and the losing branch going to zero, which is how a called off bet settles on Seer.</li>
+<li>The mandate in <code>demo/mandates/</code> switching to the adopted category, which the demo harness then enforces.</li>
+</ul>
 </section>
 
 <section id="refs">
