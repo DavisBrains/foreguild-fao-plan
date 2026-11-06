@@ -1,0 +1,26 @@
+name: Pilot task request
+description: Ask the Foreguild pilot to take on a small task. Part of the FIP-04d demo.
+title: "[pilot-task] "
+labels: ["pilot-task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form feeds the FIP-04d demo on Seer. The rules live in demo/fip-04d.md. Each GitHub account counts once, and accounts created on or after 1 Nov 2026 are left out of the count.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Task category
+      description: After the FIP-04d decision this list keeps only the adopted category.
+      options:
+        - CSV cleanup
+        - CI patch
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: What should be done
+      description: Describe the task and how you would check that it is done.
+    validations:
+      required: true
