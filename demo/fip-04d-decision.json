@@ -1,0 +1,22 @@
+{
+  "proposal": "FIP-04d",
+  "adopted_category": "CSV cleanup",
+  "decision_outcome_index": 0,
+  "price_rule_on": false,
+  "reason": "default",
+  "explanation": "Neither branch has an UP pool on Swapr. Branch A UP and branch B UP were each checked against their parent outcome token and the Swapr factory returned no pool for either pair, so the minimum depth of 5 parent tokens per side was never met. The price rule stayed off and the default of CSV cleanup applies.",
+  "pool_check": {
+    "chain": "Gnosis (100)",
+    "swapr_factory": "0xA0864cCA6E114013AB0e27cbd5B6f4c8947da766",
+    "checked_at": "2026-11-12T17:02:30Z",
+    "branch_a": {"market": "0x1f93d14169a966f624e2f86162a1a5dfcffdb8d8", "up_token": "0x7D2a14FBd2FF11523327C30bd874E389283b4Bf2", "parent_token": "0xE3cb87d9c262b5D0bFb1A8758651A50961C60439", "pool": null},
+    "branch_b": {"market": "0x9d713f713de42887cf0a32a80e228711b299902f", "up_token": "0x7Fd4f56CfcBb82d2F659C076c6A694A873319AF6", "parent_token": "0x826C85c88db54A9d3e1bbDfB6424c73511bBc70D", "pool": null}
+  },
+  "reads": [],
+  "published_at": "2026-11-12T17:02:30Z",
+  "markets": {
+    "decision": "https://app.seer.pm/markets/100/0xd1ccddfb0684a93f9bbb9a7dda0918a62ba3e4c7",
+    "branch_a_csv_cleanup": "https://app.seer.pm/markets/100/0x1f93d14169a966f624e2f86162a1a5dfcffdb8d8",
+    "branch_b_ci_patch": "https://app.seer.pm/markets/100/0x9d713f713de42887cf0a32a80e228711b299902f"
+  }
+}
